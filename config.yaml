@@ -1,0 +1,26 @@
+listen_port: "8080"
+cert_file: "server.crt"
+key_file: "server.key"
+load_balancing_type: "least_connections"
+pool_config:
+  initial_cap: 5
+  max_cap: 30
+health_check:
+  interval: 30s
+keep_alive:
+  interval: 10s
+api_port: "8081"
+circuit_breaker:
+  max_failures: 3
+  open_timeout: 10s
+  half_open_timeout: 5s
+force_disconnect: false
+s3_bucket: "your-bucket-name"
+s3_key: "path/to/config.yaml"
+backends:
+  - address: "127.0.0.1:8081"
+    tls: false
+    insecure_skip_verify: false
+  - address: "127.0.0.1:8082"
+    tls: false
+    insecure_skip_verify: false
