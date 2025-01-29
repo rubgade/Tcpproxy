@@ -77,3 +77,10 @@ This Go application implements a TCP proxy with advanced features like load bala
   - **Keep-Alive:** You occasionally check in with seated customers to make sure they're still there, so their table doesn't get reassigned too soon.
 
 This proxy makes managing network traffic efficient, reliable, and adaptable to changes without downtime.
+
+To modify the TCP proxy to support more than 10,000 connections, we need to consider several aspects:
+
+- Increasing File Descriptors: On Linux systems, the number of simultaneous connections is often limited by the number of available file descriptors. We need to increase this limit.
+- Adjusting System Settings: Modify system parameters like net.core.somaxconn to handle more pending connections.
+- Optimizing Go Runtime: Ensure Go's runtime can handle a high number of goroutines by potentially adjusting GOMAXPROCS.
+- Resource Management: Efficiently manage resources like memory and CPU to handle the increased load.

@@ -12,6 +12,7 @@ import (
     "net"
     "net/http"
     "sync"
+	"runtime"
     "time"
 
     "gopkg.in/yaml.v2"
@@ -361,6 +362,8 @@ func handleConnection(client net.Conn, backend *Backend, loadBalancingType strin
     }
     defer client.Close()
 
+	
+
     conn, err := backend.ConnectionPool.Get()
     if err != nil {
         log.Printf("Error getting connection from pool for backend %s: %v", backend.Address, err)
@@ -526,6 +529,9 @@ func main() {
         log.Fatalf("Error listening: %v", err)
     }
     defer listener.Close()
+	// Set GOMAXPROCS to utilize all CPU cores for better concurrency handling
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
 
     proxy := NewProxy(tcpconfig)
     log.Printf("Proxy started on port %s, distributing to %d backends with %s load balancing", tcpconfig.ListenPort, len(proxy.backends), tcpconfig.LoadBalancingType)
